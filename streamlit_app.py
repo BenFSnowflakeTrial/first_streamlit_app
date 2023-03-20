@@ -45,13 +45,12 @@ def get_fruit_load_list():
     my_cur.execute("select * from fruit_load_list")
     return my_cur.fetchall()
 
-if streamlit.button('Get Fruit Load List'):
+if streamlit.button('Get Fruit List'):
   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
   my_data_rows = get_fruit_load_list()
   my_cnx.close()
   streamlit.dataframe(my_data_rows)
 
-  # maybe an issue with this function? who knows, python sucks
 def insert_row_snowflake(new_fruit):
   with my_cnx.cursor() as my_cur:
     my_cur.execute("insert into fruit_load_list values ('" + new_fruit + "')")
@@ -59,5 +58,5 @@ def insert_row_snowflake(new_fruit):
  
 if streamlit.button('Add a Fruit to the List'):
   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-  back_from_function = insert_row_snowflake(fruit_choice) # this is broken, streamlit returns an error at line 60
+  back_from_function = insert_row_snowflake(fruit_choice)
   streamlit.text(back_from_function)
